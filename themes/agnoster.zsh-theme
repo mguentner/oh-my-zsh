@@ -199,14 +199,20 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%~'
+  prompt_segment red black '%~'
 }
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment blue black "(`basename $virtualenv_path`)"
+    prompt_segment red black "(`basename $virtualenv_path`)"
+  fi
+}
+
+prompt_nixshell() {
+  if [[ IN_NIX_SHELL -eq "1" ]]; then
+    prompt_segment white blue "λ"
   fi
 }
 
@@ -229,6 +235,7 @@ build_prompt() {
   RETVAL=$?
   prompt_status
   prompt_virtualenv
+  prompt_nixshell
   prompt_context
   prompt_dir
   prompt_git
